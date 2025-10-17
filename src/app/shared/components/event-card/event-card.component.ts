@@ -34,13 +34,29 @@ export class EventCardComponent {
     });
   }
 
-  getCategoryName(categoryId: number): string {
-    const category = this.categories.find(c => c.id === categoryId);
+  getCategoryName(categoryId?: number): string {
+    if (!this.categories || this.categories.length === 0) {
+      return 'Chargement...';
+    }
+    if (!categoryId) {
+      return 'Non catégorisé';
+    }
+    const category = this.categories.find(c => {
+      return c.id === categoryId || (typeof c.id === 'string' && c.id === String(categoryId));
+    });
     return category ? category.name : 'Non catégorisé';
   }
 
-  getCategoryColor(categoryId: number): string {
-    const category = this.categories.find(c => c.id === categoryId);
+  getCategoryColor(categoryId?: number): string {
+    if (!this.categories || this.categories.length === 0) {
+      return '#666';
+    }
+    if (!categoryId) {
+      return '#666';
+    }
+    const category = this.categories.find(c => {
+      return c.id === categoryId || (typeof c.id === 'string' && c.id === String(categoryId));
+    });
     return category ? category.color : '#666';
   }
 }

@@ -21,17 +21,19 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadEvents();
+    this.loadData();
   }
 
-  private loadCategories(): void {
+  private loadData(): void {
     this.categoryService.getAllCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
+        console.log('Catégories chargées:', categories);
+        this.loadEvents();
       },
       error: (error) => {
         console.error('Erreur lors du chargement des catégories:', error);
+        this.loadEvents();
       }
     });
   }
@@ -39,6 +41,8 @@ export class HomeComponent implements OnInit {
   private loadEvents(): void {
     this.eventService.getAllEvents().subscribe({
       next: (events) => {
+        console.log('Événements chargés:', events);
+        console.log('Catégories disponibles:', this.categories);
         this.featuredEvents = events.slice(0, 2);
         this.upcomingEvents = events.slice(2, 4);
         this.isLoading = false;
