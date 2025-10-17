@@ -1,0 +1,98 @@
+<div class="event-form-container">
+  <h2>{{ event ? 'Modifier l\'événement' : 'Créer un nouvel événement' }}</h2>
+  
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
+    
+    <!-- Titre -->
+    <div class="form-group">
+      <label for="title">Titre *</label>
+      <input 
+        type="text" 
+        id="title" 
+        formControlName="title"
+        class="form-control"
+        [class.error]="hasError('title', 'required') || hasError('title', 'minlength') || hasError('title', 'maxlength')"
+        placeholder="Ex: Conférence Angular">
+      <div class="error-message" *ngIf="hasError('title', 'required') || hasError('title', 'minlength') || hasError('title', 'maxlength')">
+        {{ getErrorMessage('title') }}
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea 
+        id="description" 
+        formControlName="description"
+        class="form-control"
+        [class.error]="hasError('description', 'required') || hasError('description', 'minlength') || hasError('description', 'maxlength')"
+        rows="4"
+        placeholder="Décrivez votre événement..."></textarea>
+      <div class="error-message" *ngIf="hasError('description', 'required') || hasError('description', 'minlength') || hasError('description', 'maxlength')">
+        {{ getErrorMessage('description') }}
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="form-group">
+      <label for="date">Date *</label>
+      <input 
+        type="date" 
+        id="date" 
+        formControlName="date"
+        class="form-control"
+        [class.error]="hasError('date', 'required') || hasError('date', 'futureDate')">
+      <div class="error-message" *ngIf="hasError('date', 'required') || hasError('date', 'futureDate')">
+        {{ getErrorMessage('date') }}
+      </div>
+    </div>
+
+    <!-- Localisation -->
+    <div class="form-group">
+      <label for="location">Localisation</label>
+      <input 
+        type="text" 
+        id="location" 
+        formControlName="location"
+        class="form-control"
+        [class.error]="hasError('location', 'maxlength')"
+        placeholder="Ex: Paris, France">
+      <div class="error-message" *ngIf="hasError('location', 'maxlength')">
+        {{ getErrorMessage('location') }}
+      </div>
+    </div>
+
+    <!-- Catégorie -->
+    <div class="form-group" *ngIf="categories.length > 0">
+      <label for="categoryId">Catégorie</label>
+      <select 
+        id="categoryId" 
+        formControlName="categoryId"
+        class="form-control">
+        <option value="">Sélectionner une catégorie</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="onCancel()"
+        [disabled]="isSubmitting">
+        Annuler
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="eventForm.invalid || isSubmitting">
+        <span *ngIf="isSubmitting">En cours...</span>
+        <span *ngIf="!isSubmitting">{{ event ? 'Modifier' : 'Créer' }}</span>
+      </button>
+    </div>
+
+  </form>
+</div>

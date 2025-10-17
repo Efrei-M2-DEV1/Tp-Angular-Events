@@ -1,8 +1,9 @@
 export interface User {
-  id?: number;                    // ? = optionnel
-  name: string;                   // obligatoire
-  email: string;                  // obligatoire
-  password?: string;              // optionnel (on ne le renvoie pas toujours)
+  id?: number;
+  name: string;
+  email: string;
+  password?: string;
+  createdAt?: string;
 }
 
 export interface LoginCredentials {

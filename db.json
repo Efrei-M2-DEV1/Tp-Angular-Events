@@ -1,1 +1,30 @@
-{}
+{
+  "users": [
+
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Conférence",
+      "color": "#3B82F6"
+    },
+    {
+      "id": "2",
+      "name": "Atelier",
+      "color": "#10B981"
+    },
+    {
+      "id": "3",
+      "name": "Networking",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "4",
+      "name": "Formation",
+      "color": "#8B5CF6"
+    }
+  ],
+  "events": [
+
+  ]
+}
