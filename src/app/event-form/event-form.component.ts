@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Event, CreateEventDto } from '../core/models/event.model';
+import { EventService } from '../core/services/event.service';
+import { CategoryService } from '../core/services/category.service';
+import { Category } from '../core/models/category.model';
 import { futureDateValidator } from '../shared/validators/future-date.validator';
 
 @Component({
@@ -10,17 +14,34 @@ import { futureDateValidator } from '../shared/validators/future-date.validator'
 })
 export class EventFormComponent implements OnInit {
   @Input() event?: Event;
-  @Input() categories: any[] = [];
-  @Output() eventSubmit = new EventEmitter<CreateEventDto>();
-  @Output() formCancel = new EventEmitter<void>();
 
   eventForm!: FormGroup;
   isSubmitting = false;
+  categories: Category[] = [];
+  isEditMode = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private eventService: EventService,
+    private categoryService: CategoryService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.isEditMode = !!this.event;
+    this.loadCategories();
     this.initializeForm();
+  }
+
+  private loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des catégories:', error);
+      }
+    });
   }
 
   private initializeForm(): void {
@@ -55,21 +76,37 @@ export class EventFormComponent implements OnInit {
         delete formData.categoryId;
       }
 
-      this.eventSubmit.emit(formData);
-      
-      setTimeout(() => {
-        this.isSubmitting = false;
-        if (!this.event) {
-          this.eventForm.reset();
-        }
-      }, 1000);
+      if (this.isEditMode && this.event?.id) {
+        this.eventService.updateEvent(this.event.id, formData).subscribe({
+          next: () => {
+            console.log('Événement mis à jour avec succès');
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            console.error('Erreur lors de la mise à jour:', error);
+            this.isSubmitting = false;
+          }
+        });
+      } else {
+        this.eventService.createEvent(formData, 1).subscribe({
+          next: () => {
+            console.log('Événement créé avec succès');
+            this.eventForm.reset();
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            console.error('Erreur lors de la création:', error);
+            this.isSubmitting = false;
+          }
+        });
+      }
     } else {
       this.markFormGroupTouched();
     }
   }
 
   onCancel(): void {
-    this.formCancel.emit();
+    this.router.navigate(['/home']);
   }
 
   private markFormGroupTouched(): void {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Event } from '../core/models/event.model';
 import { EventService } from '../core/services/event.service';
 import { CategoryService } from '../core/services/category.service';
@@ -17,7 +18,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -79,5 +81,9 @@ export class HomeComponent implements OnInit {
   getCategoryColor(categoryId: number): string {
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.color : '#666';
+  }
+
+  onCreateEvent(): void {
+    this.router.navigate(['/create-event']);
   }
 }
