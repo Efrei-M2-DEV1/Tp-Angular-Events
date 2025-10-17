@@ -2,10 +2,13 @@ export interface Event {
   id?: number;
   title: string;
   description: string;
-  date: string;                   // Format ISO : "2025-11-15"
+  date: string;
   location?: string;
-  userId?: number;                // ID de l'utilisateur qui a créé l'événement
-  categoryId?: number;            // ID de la catégorie
+  categoryId?: number;
+  userId?: number;
+  maxParticipants?: number;
+  currentParticipants?: number;
+  createdAt?: string;
 }
 
 export interface CreateEventDto {
@@ -14,6 +17,7 @@ export interface CreateEventDto {
   date: string;
   location?: string;
   categoryId?: number;
+  maxParticipants?: number;
 }
 
 export interface UpdateEventDto {
@@ -22,4 +26,6 @@ export interface UpdateEventDto {
   date?: string;
   location?: string;
   categoryId?: number;
+  maxParticipants?: number;
+  currentParticipants?: number;
 }
