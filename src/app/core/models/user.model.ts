@@ -1,20 +1,21 @@
 export interface User {
-  id?: number;                    // ? = optionnel
-  name: string;                   // obligatoire
-  email: string;                  // obligatoire
-  password?: string;              // optionnel (on ne le renvoie pas toujours)
-}
-
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
+  id?: number;
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  role?: string;
+  createdAt?: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface AuthResponse {
