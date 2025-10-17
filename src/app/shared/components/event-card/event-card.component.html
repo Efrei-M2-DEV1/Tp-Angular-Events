@@ -9,6 +9,11 @@
     <div class="event-location" *ngIf="event.location">
       📍 {{ event.location }}
     </div>
+    <div class="event-category" *ngIf="event.categoryId">
+      <span class="category-badge" [style.background-color]="getCategoryColor(event.categoryId)">
+        {{ getCategoryName(event.categoryId) }}
+      </span>
+    </div>
   </div>
   
   <div class="event-actions" *ngIf="showActions">

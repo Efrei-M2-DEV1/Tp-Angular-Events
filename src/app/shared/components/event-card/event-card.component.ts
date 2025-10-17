@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Event } from '../../../core/models/event.model';
+import { Category } from '../../../core/models/category.model';
 
 @Component({
   selector: 'app-event-card',
@@ -9,6 +10,7 @@ import { Event } from '../../../core/models/event.model';
 export class EventCardComponent {
   @Input() event!: Event;
   @Input() showActions: boolean = true;
+  @Input() categories: Category[] = [];
   @Output() eventSelected = new EventEmitter<Event>();
   @Output() eventDeleted = new EventEmitter<number>();
 
@@ -30,5 +32,15 @@ export class EventCardComponent {
       month: 'long',
       year: 'numeric'
     });
+  }
+
+  getCategoryName(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.name : 'Non catégorisé';
+  }
+
+  getCategoryColor(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.color : '#666';
   }
 }

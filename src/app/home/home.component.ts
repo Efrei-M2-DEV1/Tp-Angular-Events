@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Event } from '../core/models/event.model';
+import { EventService } from '../core/services/event.service';
+import { CategoryService } from '../core/services/category.service';
+import { Category } from '../core/models/category.model';
 
 @Component({
   selector: 'app-home',
@@ -9,54 +12,42 @@ import { Event } from '../core/models/event.model';
 export class HomeComponent implements OnInit {
   featuredEvents: Event[] = [];
   upcomingEvents: Event[] = [];
+  categories: Category[] = [];
+  isLoading = true;
 
-  constructor() {}
+  constructor(
+    private eventService: EventService,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
-    this.loadFeaturedEvents();
-    this.loadUpcomingEvents();
+    this.loadCategories();
+    this.loadEvents();
   }
 
-  private loadFeaturedEvents(): void {
-    this.featuredEvents = [
-      {
-        id: 1,
-        title: 'Conférence Angular 2024',
-        description: 'Découvrez les dernières fonctionnalités d\'Angular avec des experts de la communauté.',
-        date: '2024-12-15',
-        location: 'Paris, France',
-        categoryId: 1
+  private loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
       },
-      {
-        id: 2,
-        title: 'Workshop TypeScript',
-        description: 'Apprenez TypeScript de A à Z avec des exercices pratiques et des projets concrets.',
-        date: '2024-12-20',
-        location: 'Lyon, France',
-        categoryId: 2
+      error: (error) => {
+        console.error('Erreur lors du chargement des catégories:', error);
       }
-    ];
+    });
   }
 
-  private loadUpcomingEvents(): void {
-    this.upcomingEvents = [
-      {
-        id: 3,
-        title: 'Meetup Développeurs',
-        description: 'Rencontrez d\'autres développeurs et partagez vos expériences.',
-        date: '2024-12-25',
-        location: 'Marseille, France',
-        categoryId: 3
+  private loadEvents(): void {
+    this.eventService.getAllEvents().subscribe({
+      next: (events) => {
+        this.featuredEvents = events.slice(0, 2);
+        this.upcomingEvents = events.slice(2, 4);
+        this.isLoading = false;
       },
-      {
-        id: 4,
-        title: 'Formation React',
-        description: 'Maîtrisez React avec hooks, context et les meilleures pratiques.',
-        date: '2025-01-10',
-        location: 'Toulouse, France',
-        categoryId: 2
+      error: (error) => {
+        console.error('Erreur lors du chargement des événements:', error);
+        this.isLoading = false;
       }
-    ];
+    });
   }
 
   onEventSelected(event: Event): void {
@@ -64,8 +55,25 @@ export class HomeComponent implements OnInit {
   }
 
   onEventDeleted(eventId: number): void {
-    console.log('Événement supprimé:', eventId);
-    this.featuredEvents = this.featuredEvents.filter(e => e.id !== eventId);
-    this.upcomingEvents = this.upcomingEvents.filter(e => e.id !== eventId);
+    this.eventService.deleteEvent(eventId).subscribe({
+      next: () => {
+        this.featuredEvents = this.featuredEvents.filter(e => e.id !== eventId);
+        this.upcomingEvents = this.upcomingEvents.filter(e => e.id !== eventId);
+        console.log('Événement supprimé avec succès');
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression:', error);
+      }
+    });
+  }
+
+  getCategoryName(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.name : 'Non catégorisé';
+  }
+
+  getCategoryColor(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.color : '#666';
   }
 }

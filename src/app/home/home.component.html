@@ -6,37 +6,43 @@
   </div>
 
   <div class="content-section">
-    <!-- Événements en vedette -->
-    <section class="events-section">
-      <h2>Événements en vedette</h2>
-      <div class="events-grid" *ngIf="featuredEvents.length > 0; else noFeaturedEvents">
-        <app-event-card 
-          *ngFor="let event of featuredEvents"
-          [event]="event"
-          [showActions]="false"
-          (eventSelected)="onEventSelected($event)">
-        </app-event-card>
-      </div>
-      <ng-template #noFeaturedEvents>
-        <p class="no-events">Aucun événement en vedette pour le moment.</p>
-      </ng-template>
-    </section>
+    <div *ngIf="isLoading" class="loading">
+      <p>Chargement des événements...</p>
+    </div>
 
-    <!-- Événements à venir -->
-    <section class="events-section">
-      <h2>Événements à venir</h2>
-      <div class="events-grid" *ngIf="upcomingEvents.length > 0; else noUpcomingEvents">
-        <app-event-card 
-          *ngFor="let event of upcomingEvents"
-          [event]="event"
-          [showActions]="true"
-          (eventSelected)="onEventSelected($event)"
-          (eventDeleted)="onEventDeleted($event)">
-        </app-event-card>
-      </div>
-      <ng-template #noUpcomingEvents>
-        <p class="no-events">Aucun événement à venir pour le moment.</p>
-      </ng-template>
-    </section>
+    <div *ngIf="!isLoading">
+      <section class="events-section">
+        <h2>Événements en vedette</h2>
+        <div class="events-grid" *ngIf="featuredEvents.length > 0; else noFeaturedEvents">
+          <app-event-card 
+            *ngFor="let event of featuredEvents"
+            [event]="event"
+            [showActions]="false"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)">
+          </app-event-card>
+        </div>
+        <ng-template #noFeaturedEvents>
+          <p class="no-events">Aucun événement en vedette pour le moment.</p>
+        </ng-template>
+      </section>
+
+      <section class="events-section">
+        <h2>Événements à venir</h2>
+        <div class="events-grid" *ngIf="upcomingEvents.length > 0; else noUpcomingEvents">
+          <app-event-card 
+            *ngFor="let event of upcomingEvents"
+            [event]="event"
+            [showActions]="true"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)">
+          </app-event-card>
+        </div>
+        <ng-template #noUpcomingEvents>
+          <p class="no-events">Aucun événement à venir pour le moment.</p>
+        </ng-template>
+      </section>
+    </div>
   </div>
 </div>
