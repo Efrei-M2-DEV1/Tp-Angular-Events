@@ -9,6 +9,9 @@
     <div class="event-location" *ngIf="event.location">
       📍 {{ event.location }}
     </div>
+    <div class="event-participants" *ngIf="event.maxParticipants">
+      👥 {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} places
+    </div>
     <div class="event-category" *ngIf="event.categoryId">
       <span class="category-badge" [style.background-color]="getCategoryColor(event.categoryId)">
         {{ getCategoryName(event.categoryId) }}
@@ -17,6 +20,19 @@
   </div>
   
   <div class="event-actions" *ngIf="showActions">
+    <button
+      class="btn-register"
+      type="button"
+      [disabled]="event.maxParticipants && (event.currentParticipants || 0) >= event.maxParticipants"
+      (click)="onRegisterClick($event)">
+      {{ (event.maxParticipants && (event.currentParticipants || 0) >= event.maxParticipants) ? 'Complet' : "S'inscrire" }}
+    </button>
+    <button 
+      class="btn-edit" 
+      (click)="onEditClick($event)"
+      type="button">
+      ✏️ Modifier
+    </button>
     <button 
       class="btn-delete" 
       (click)="onDeleteClick($event)"

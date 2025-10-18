@@ -1,15 +1,16 @@
 export interface Event {
-  id: number;
+  id: string | number;
   title: string;
   description: string;
   date: string;
-  location: string;
-  categoryId: number;
-  organizerId: number;
-  maxParticipants: number;
-  currentParticipants: number;
-  status: string;
-  imageUrl: string;
+  location?: string;
+  categoryId?: string | number;
+  userId?: string | number;
+  organizerId?: string | number;
+  maxParticipants?: number;
+  currentParticipants?: number;
+  status?: string;
+  imageUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -29,7 +30,8 @@ export interface CreateEventDto {
   description: string;
   date: string;
   location?: string;
-  categoryId?: number;
+  categoryId?: string | number;
+  maxParticipants?: number;
 }
 
 export interface UpdateEventDto {
@@ -37,6 +39,7 @@ export interface UpdateEventDto {
   description?: string;
   date?: string;
   location?: string;
-  categoryId?: number;
+  categoryId?: string | number;
   currentParticipants?: number;
+  maxParticipants?: number;
 }

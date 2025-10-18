@@ -62,7 +62,7 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  onEventDeleted(eventId: number): void {
+  onEventDeleted(eventId: string | number): void {
     this.eventService.deleteEvent(eventId).subscribe({
       next: () => {
         this.events = this.events.filter(e => e.id !== eventId);

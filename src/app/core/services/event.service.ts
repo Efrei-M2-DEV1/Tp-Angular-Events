@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Event, CreateEventDto, UpdateEventDto } from '../models/event.model';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class EventService {
   /**
    * Récupérer un événement par ID
    */
-  getEventById(id: number): Observable<Event> {
+  getEventById(id: string | number): Observable<Event> {
     return this.http.get<Event>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
@@ -33,7 +33,7 @@ export class EventService {
   /**
    * Récupérer les événements d'un utilisateur
    */
-  getEventsByUserId(userId: number): Observable<Event[]> {
+  getEventsByUserId(userId: string | number): Observable<Event[]> {
     return this.http.get<Event[]>(`${this.apiUrl}?userId=${userId}`).pipe(
       catchError(this.handleError)
     );
@@ -42,7 +42,7 @@ export class EventService {
   /**
    * Récupérer les événements d'une catégorie
    */
-  getEventsByCategoryId(categoryId: number): Observable<Event[]> {
+  getEventsByCategoryId(categoryId: string | number): Observable<Event[]> {
     return this.http.get<Event[]>(`${this.apiUrl}?categoryId=${categoryId}`).pipe(
       catchError(this.handleError)
     );
@@ -51,7 +51,7 @@ export class EventService {
   /**
    * Créer un nouvel événement
    */
-  createEvent(eventData: CreateEventDto, userId: number): Observable<Event> {
+  createEvent(eventData: CreateEventDto, userId: string | number): Observable<Event> {
     const newEvent = {
       ...eventData,
       userId,
@@ -67,7 +67,7 @@ export class EventService {
   /**
    * Mettre à jour un événement existant
    */
-  updateEvent(id: number, eventData: UpdateEventDto): Observable<Event> {
+  updateEvent(id: string | number, eventData: UpdateEventDto): Observable<Event> {
     return this.http.patch<Event>(`${this.apiUrl}/${id}`, eventData).pipe(
       catchError(this.handleError)
     );
@@ -76,7 +76,7 @@ export class EventService {
   /**
    * Supprimer un événement
    */
-  deleteEvent(id: number): Observable<void> {
+  deleteEvent(id: string | number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
@@ -118,22 +118,22 @@ export class EventService {
   /**
    * Inscrire un participant à un événement
    */
-  registerParticipant(eventId: number): Observable<Event> {
+  registerParticipant(eventId: string | number): Observable<Event> {
     return this.getEventById(eventId).pipe(
-      map(event => {
-        if (event.maxParticipants && event.currentParticipants && 
-            event.currentParticipants >= event.maxParticipants) {
-          throw new Error('Événement complet');
+      switchMap(event => {
+        const current = event.currentParticipants || 0;
+        const max = event.maxParticipants ?? Infinity;
+        if (current >= max) {
+          return throwError(() => new Error('Événement complet'));
         }
-        
-        const updatedEvent = {
-          currentParticipants: (event.currentParticipants || 0) + 1
+
+        const updatedEvent: UpdateEventDto = {
+          currentParticipants: current + 1
         };
-        
         return this.updateEvent(eventId, updatedEvent);
       }),
       catchError(this.handleError)
-    ) as any;
+    );
   }
 
   /**

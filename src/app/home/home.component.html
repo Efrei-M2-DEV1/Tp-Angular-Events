@@ -17,11 +17,32 @@
           <app-event-card 
             *ngFor="let event of featuredEvents"
             [event]="event"
-            [showActions]="false"
+            [showActions]="true"
             [categories]="categories"
-            (eventSelected)="onEventSelected($event)">
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
           </app-event-card>
         </div>
+      <section class="events-section">
+        <h2>Événements passés</h2>
+        <div class="events-grid" *ngIf="pastEvents.length > 0; else noPastEvents">
+          <app-event-card 
+            *ngFor="let event of pastEvents"
+            [event]="event"
+            [showActions]="true"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
+          </app-event-card>
+        </div>
+        <ng-template #noPastEvents>
+          <p class="no-events">Aucun événement passé pour le moment.</p>
+        </ng-template>
+      </section>
         <ng-template #noFeaturedEvents>
           <p class="no-events">Aucun événement en vedette pour le moment.</p>
         </ng-template>
@@ -36,7 +57,9 @@
             [showActions]="true"
             [categories]="categories"
             (eventSelected)="onEventSelected($event)"
-            (eventDeleted)="onEventDeleted($event)">
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
           </app-event-card>
         </div>
         <ng-template #noUpcomingEvents>
