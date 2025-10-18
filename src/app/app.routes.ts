@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
-// import { EventsComponent } from './components/events/events.component';
-// import { EventDetailComponent } from './components/event-detail/event-detail.component';
+import { EventFormComponent } from './event-form/event-form.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -33,18 +33,24 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'Accueil'
   },
-  // {
-  //   path: 'events',
-  //   component: EventsComponent,
-  //   canActivate: [authGuard],
-  //   title: 'Événements'
-  // },
-  // {
-  //   path: 'event/:id',
-  //   component: EventDetailComponent,
-  //   canActivate: [authGuard],
-  //   title: 'Détail de l\'événement'
-  // },
+   {
+    path: 'event-form',
+    component: EventFormComponent,
+    canActivate: [authGuard],
+    title: 'Créer un événement'
+  },
+   {
+    path: 'event-form/:id',
+    component: EventFormComponent,
+    canActivate: [authGuard],
+    title: 'Modifier un événement'
+  },
+  {
+    path: 'event/:id',
+    component: EventDetailComponent,
+    canActivate: [authGuard],
+    title: 'Détail de l\'événement'
+  },
 
   // Route wildcard - Page 404 (optionnelle mais recommandée)
   {

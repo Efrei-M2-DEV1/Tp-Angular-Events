@@ -63,7 +63,7 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/users`, newUser)
       .pipe(
         tap((user: User) => {
-          // Générer un token
+          // Génération d'un token
           const token = this.generateToken(user);
           
           // Sauvegarder dans localStorage
