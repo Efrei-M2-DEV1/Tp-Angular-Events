@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { Event } from '../core/models/event.model';
 import { EventService } from '../core/services/event.service';
 import { CategoryService } from '../core/services/category.service';
 import { Category } from '../core/models/category.model';
+import { EventCardComponent } from '../event-card/event-card.component';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule, EventCardComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
