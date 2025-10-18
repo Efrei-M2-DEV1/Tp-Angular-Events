@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Connexion</h2>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          class="form-control"
+          [class.is-invalid]="email?.invalid && email?.touched">
+        
+        <div class="error-message" *ngIf="email?.invalid && email?.touched">
+          <small *ngIf="email?.errors?.['required']">L'email est requis</small>
+          <small *ngIf="email?.errors?.['email']">Email invalide</small>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          class="form-control"
+          [class.is-invalid]="password?.invalid && password?.touched">
+        
+        <div class="error-message" *ngIf="password?.invalid && password?.touched">
+          <small *ngIf="password?.errors?.['required']">Le mot de passe est requis</small>
+          <small *ngIf="password?.errors?.['minlength']">Minimum 6 caractères</small>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="alert alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="isLoading">Connexion...</span>
+      </button>
+
+      <!-- Register Link -->
+      <p class="register-link">
+        Pas encore de compte ? 
+        <a routerLink="/register">S'inscrire</a>
+      </p>
+    </form>
+  </div>
+</div>

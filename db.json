@@ -1,6 +1,38 @@
 {
   "users": [
-
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "role": "admin",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "password123",
+      "role": "user",
+      "createdAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "ebe1",
+      "name": "Ali",
+      "email": "ali@ali.com",
+      "password": "aliali",
+      "role": "user",
+      "createdAt": "2025-10-17T14:06:03.625Z"
+    },
+    {
+      "id": "8c87",
+      "name": "toto",
+      "email": "toto@toto.com",
+      "password": "totototo",
+      "confirmPassword": "totototo",
+      "role": "user",
+      "createdAt": "2025-10-18T16:00:54.022Z"
+    }
   ],
   "categories": [
     {
@@ -25,6 +57,65 @@
     }
   ],
   "events": [
-
+    {
+      "id": "1",
+      "title": "Angular Conference 2024",
+      "description": "La plus grande conférence Angular de l'année avec des experts mondiaux",
+      "date": "2024-06-15T09:00:00.000Z",
+      "location": "Paris, France",
+      "categoryId": 1,
+      "organizerId": 1,
+      "maxParticipants": 200,
+      "currentParticipants": 45,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Angular+Conference",
+      "createdAt": "2024-01-03T00:00:00.000Z",
+      "updatedAt": "2024-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "Marathon de Paris 2024",
+      "description": "Course internationale à travers les rues de Paris",
+      "date": "2024-04-07T07:00:00.000Z",
+      "location": "Paris, France",
+      "categoryId": 2,
+      "organizerId": 2,
+      "maxParticipants": 50000,
+      "currentParticipants": 32000,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Marathon+Paris",
+      "createdAt": "2024-01-05T00:00:00.000Z",
+      "updatedAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "Festival de Jazz",
+      "description": "Trois jours de concerts de jazz avec des artistes internationaux",
+      "date": "2024-07-20T18:00:00.000Z",
+      "location": "Nice, France",
+      "categoryId": 3,
+      "organizerId": 1,
+      "maxParticipants": 5000,
+      "currentParticipants": 1200,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Jazz+Festival",
+      "createdAt": "2024-01-08T00:00:00.000Z",
+      "updatedAt": "2024-01-20T00:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "title": "Startup Summit",
+      "description": "Rencontre entre entrepreneurs et investisseurs",
+      "date": "2024-05-10T09:00:00.000Z",
+      "location": "Lyon, France",
+      "categoryId": 4,
+      "organizerId": 2,
+      "maxParticipants": 300,
+      "currentParticipants": 180,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Startup+Summit",
+      "createdAt": "2024-01-12T00:00:00.000Z",
+      "updatedAt": "2024-01-25T00:00:00.000Z"
+    }
   ]
 }

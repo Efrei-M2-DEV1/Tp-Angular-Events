@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { Event, CreateEventDto } from '../core/models/event.model';
 import { EventService } from '../core/services/event.service';
 import { CategoryService } from '../core/services/category.service';
@@ -9,6 +10,8 @@ import { futureDateValidator } from '../shared/validators/future-date.validator'
 
 @Component({
   selector: 'app-event-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.scss']
 })

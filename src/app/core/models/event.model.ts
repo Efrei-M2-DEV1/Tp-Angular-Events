@@ -1,15 +1,28 @@
 export interface Event {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   date: string;
-  location?: string;
-  categoryId?: number;
-  userId?: number;
-  maxParticipants?: number;
-  currentParticipants?: number;
+  location: string;
+  categoryId: number;
+  organizerId: number;
+  maxParticipants: number;
+  currentParticipants: number;
+  status: string;
+  imageUrl: string;
   createdAt?: string;
+  updatedAt?: string;
 }
+
+// export interface Event {
+//   id?: number;
+//   title: string;
+//   description: string;
+//   date: string;                   // Format ISO : "2025-11-15"
+//   location?: string;
+//   userId?: number;                // ID de l'utilisateur qui a créé l'événement
+//   categoryId?: number;            // ID de la catégorie
+// }
 
 export interface CreateEventDto {
   title: string;
@@ -17,7 +30,6 @@ export interface CreateEventDto {
   date: string;
   location?: string;
   categoryId?: number;
-  maxParticipants?: number;
 }
 
 export interface UpdateEventDto {
@@ -26,6 +38,5 @@ export interface UpdateEventDto {
   date?: string;
   location?: string;
   categoryId?: number;
-  maxParticipants?: number;
   currentParticipants?: number;
 }
