@@ -15,23 +15,6 @@
       "password": "password123",
       "role": "user",
       "createdAt": "2024-01-02T00:00:00.000Z"
-    },
-    {
-      "id": "ebe1",
-      "name": "Ali",
-      "email": "ali@ali.com",
-      "password": "aliali",
-      "role": "user",
-      "createdAt": "2025-10-17T14:06:03.625Z"
-    },
-    {
-      "id": "8c87",
-      "name": "toto",
-      "email": "toto@toto.com",
-      "password": "totototo",
-      "confirmPassword": "totototo",
-      "role": "user",
-      "createdAt": "2025-10-18T16:00:54.022Z"
     }
   ],
   "categories": [
@@ -101,14 +84,14 @@
     },
     {
       "id": "5c16",
-      "title": "Alibaba",
-      "description": "hjrdtfghjnkljhgf",
+      "title": "Alibabaz",
+      "description": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"",
       "date": "2025-10-31",
       "location": "tu",
       "categoryId": "1",
       "maxParticipants": 50,
       "userId": 1,
-      "currentParticipants": 1,
+      "currentParticipants": 2,
       "createdAt": "2025-10-18T18:46:05.246Z"
     },
     {
