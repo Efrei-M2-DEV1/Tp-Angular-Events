@@ -1,6 +1,5 @@
 export interface Category {
-  id?: number;
+  id?: string | number;
   name: string;
-  color: string;                  // Format hex : "#3498db"
-  icon?: string;
+  color: string;
 }

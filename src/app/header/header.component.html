@@ -1,0 +1,16 @@
+<header class="main-header">
+  <div class="logo">Events Manager</div>
+  <nav class="nav-menu" *ngIf="isLoggedIn">
+    <span class="user-greeting">Bonjour, <strong>{{ displayName }}</strong></span>
+    <div class="dropdown">
+      <button class="dropdown-toggle" (click)="toggleMenu()">
+        Menu ▼
+      </button>
+      <ul class="dropdown-menu" *ngIf="menuOpen">
+        <li><a (click)="navigateTo('/profile')">Mon profil</a></li>
+        <li><a (click)="navigateTo('/reservations')">Mes réservations</a></li>
+        <li><a (click)="onLogout()">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>

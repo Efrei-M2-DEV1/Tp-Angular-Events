@@ -1,0 +1,76 @@
+<div class="event-detail-container" *ngIf="!isLoading">
+  <div class="event-detail-card" *ngIf="event">
+    <div class="event-header">
+      <h1 class="event-title">{{ event.title }}</h1>
+      <div class="event-date">
+        <span class="date-icon">📅</span>
+        {{ formatDate(event.date) }}
+      </div>
+    </div>
+
+    <div class="event-info">
+      <div class="info-row" *ngIf="event.location">
+        <span class="info-icon">📍</span>
+        <span class="info-text">{{ event.location }}</span>
+      </div>
+
+      <div class="info-row" *ngIf="event.maxParticipants">
+        <span class="info-icon">👥</span>
+        <span class="info-text">
+          {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} participants
+          <span class="badge-full" *ngIf="isFull()">COMPLET</span>
+        </span>
+      </div>
+
+      <div class="info-row" *ngIf="category">
+        <span class="info-icon">🏷️</span>
+        <span class="category-badge" [style.background-color]="category.color">
+          {{ category.name }}
+        </span>
+      </div>
+    </div>
+
+    <div class="event-description-section">
+      <h2>Description</h2>
+      <p class="event-description">{{ event.description }}</p>
+    </div>
+
+    <div class="event-actions">
+      <button 
+        class="btn btn-back"
+        (click)="goBack()">
+        ← Retour
+      </button>
+
+      <div class="action-buttons">
+        <button 
+          class="btn btn-register"
+          [disabled]="isFull()"
+          (click)="onRegister()">
+          {{ isFull() ? 'Complet' : "S'inscrire" }}
+        </button>
+
+        <button 
+          class="btn btn-edit"
+          (click)="onEdit()">
+           Modifier
+        </button>
+
+        <button 
+          class="btn btn-delete"
+          (click)="onDelete()">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-message" *ngIf="!event">
+    <p>Événement introuvable.</p>
+    <button class="btn btn-back" (click)="goBack()">← Retour</button>
+  </div>
+</div>
+
+<div class="loading" *ngIf="isLoading">
+  <p>Chargement de l'événement...</p>
+</div>

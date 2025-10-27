@@ -1,0 +1,71 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Bienvenue sur Events Manager</h1>
+    <p>Découvrez et gérez vos événements en toute simplicité</p>
+        <button class="btn btn-primary" (click)="onCreateEvent()">Créer un événement</button>
+  </div>
+
+  <div class="content-section">
+    <div *ngIf="isLoading" class="loading">
+      <p>Chargement des événements...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <section class="events-section">
+        <h2>Événements en vedette</h2>
+        <div class="events-grid" *ngIf="featuredEvents.length > 0; else noFeaturedEvents">
+          <app-event-card 
+            *ngFor="let event of featuredEvents"
+            [event]="event"
+            [showActions]="true"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
+          </app-event-card>
+        </div>
+      <section class="events-section">
+        <h2>Événements passés</h2>
+        <div class="events-grid" *ngIf="pastEvents.length > 0; else noPastEvents">
+          <app-event-card 
+            *ngFor="let event of pastEvents"
+            [event]="event"
+            [showActions]="true"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
+          </app-event-card>
+        </div>
+        <ng-template #noPastEvents>
+          <p class="no-events">Aucun événement passé pour le moment.</p>
+        </ng-template>
+      </section>
+        <ng-template #noFeaturedEvents>
+          <p class="no-events">Aucun événement en vedette pour le moment.</p>
+        </ng-template>
+      </section>
+
+      <section class="events-section">
+        <h2>Événements à venir</h2>
+        <div class="events-grid" *ngIf="upcomingEvents.length > 0; else noUpcomingEvents">
+          <app-event-card 
+            *ngFor="let event of upcomingEvents"
+            [event]="event"
+            [showActions]="true"
+            [categories]="categories"
+            (eventSelected)="onEventSelected($event)"
+            (eventDeleted)="onEventDeleted($event)"
+            (eventEdited)="onEventEdited($event)"
+            (eventUpdated)="onEventUpdated($event)">
+          </app-event-card>
+        </div>
+        <ng-template #noUpcomingEvents>
+          <p class="no-events">Aucun événement à venir pour le moment.</p>
+        </ng-template>
+      </section>
+    </div>
+  </div>
+</div>

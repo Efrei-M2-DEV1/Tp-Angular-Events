@@ -1,1 +1,112 @@
-{}
+{
+  "users": [
+    {
+      "id": "1",
+      "firstName": "admin",
+      "lastName": "user",
+      "email": "admin@admin.com",
+      "password": "adminadmin",
+      "role": "admin",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com",
+      "password": "password123",
+      "role": "user",
+      "createdAt": "2024-01-02T00:00:00.000Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Conférence",
+      "color": "#3B82F6"
+    },
+    {
+      "id": "2",
+      "name": "Atelier",
+      "color": "#10B981"
+    },
+    {
+      "id": "3",
+      "name": "Networking",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "4",
+      "name": "Formation",
+      "color": "#8B5CF6"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "title": "Angular Conference 2024",
+      "description": "La plus grande conférence Angular de l'année avec des experts mondiaux",
+      "date": "2024-06-15T09:00:00.000Z",
+      "location": "Paris, France",
+      "categoryId": 1,
+      "organizerId": 1,
+      "maxParticipants": 200,
+      "currentParticipants": 45,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Angular+Conference",
+      "createdAt": "2024-01-03T00:00:00.000Z",
+      "updatedAt": "2024-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "Marathon de Paris 2024",
+      "description": "Course internationale à travers les rues de Paris",
+      "date": "2024-04-07T07:00:00.000Z",
+      "location": "Paris, France",
+      "categoryId": 2,
+      "organizerId": 2,
+      "maxParticipants": 50000,
+      "currentParticipants": 32000,
+      "status": "upcoming",
+      "imageUrl": "https://via.placeholder.com/400x250?text=Marathon+Paris",
+      "createdAt": "2024-01-05T00:00:00.000Z",
+      "updatedAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "2548",
+      "title": "Journée Portes Ouvertes",
+      "description": "JPO et job dating pour les étudiants",
+      "date": "2026-01-09",
+      "location": "Villeurbanne",
+      "categoryId": "3",
+      "userId": 1,
+      "currentParticipants": 3,
+      "createdAt": "2025-10-18T17:18:06.962Z",
+      "maxParticipants": 3
+    },
+    {
+      "id": "5c16",
+      "title": "Alibabaz",
+      "description": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"",
+      "date": "2025-10-31",
+      "location": "tu",
+      "categoryId": "1",
+      "maxParticipants": 50,
+      "userId": 1,
+      "currentParticipants": 2,
+      "createdAt": "2025-10-18T18:46:05.246Z"
+    },
+    {
+      "id": "db75",
+      "title": "Alice au pays des merveilles",
+      "description": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"",
+      "date": "2025-10-30",
+      "location": "DisneyLand",
+      "categoryId": "2",
+      "maxParticipants": 50,
+      "userId": 1,
+      "currentParticipants": 0,
+      "createdAt": "2025-10-18T19:07:14.934Z"
+    }
+  ]
+}

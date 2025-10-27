@@ -1,0 +1,17 @@
+<div class="events-page">
+  <h2>Tous les événements</h2>
+
+  <div *ngIf="isLoading">Chargement...</div>
+  <div *ngIf="!isLoading && events.length === 0">Aucun événement.</div>
+
+  <div class="events-grid" *ngIf="!isLoading && events.length > 0">
+    <app-event-card 
+      *ngFor="let event of events"
+      [event]="event"
+      [categories]="categories"
+      [showActions]="true"
+      (eventSelected)="onEventSelected($event)"
+      (eventDeleted)="onEventDeleted($event)">
+    </app-event-card>
+  </div>
+</div>
