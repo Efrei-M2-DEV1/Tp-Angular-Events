@@ -3,21 +3,37 @@
     <h2>Créer un compte</h2>
     
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Name -->
+      <!-- firstName -->
       <div class="form-group">
-        <label for="name">Nom complet</label>
+        <label for="firstName">Nom complet</label>
         <input 
           type="text" 
-          id="name" 
-          formControlName="name" 
+          id="firstName" 
+          formControlName="firstName" 
           class="form-control"
-          [class.is-invalid]="name?.invalid && name?.touched">
+          [class.is-invalid]="firstName?.invalid && firstName?.touched">
         
-        <div class="error-message" *ngIf="name?.invalid && name?.touched">
-          <small *ngIf="name?.errors?.['required']">Le nom est requis</small>
-          <small *ngIf="name?.errors?.['minlength']">Minimum 3 caractères</small>
+        <div class="error-message" *ngIf="firstName?.invalid && firstName?.touched">
+          <small *ngIf="firstName?.errors?.['required']">Le prénom est requis</small>
+          <small *ngIf="firstName?.errors?.['minlength']">Minimum 3 caractères</small>
         </div>
       </div>
+      <!-- lastName -->
+      <div class="form-group">
+        <label for="lastName">Nom complet</label>
+        <input 
+          type="text" 
+          id="lastName" 
+          formControlName="lastName" 
+          class="form-control"
+          [class.is-invalid]="lastName?.invalid && lastName?.touched">
+        
+        <div class="error-message" *ngIf="lastName?.invalid && lastName?.touched">
+          <small *ngIf="lastName?.errors?.['required']">Le nom de famille est requis</small>
+          <small *ngIf="lastName?.errors?.['minlength']">Minimum 3 caractères</small>
+        </div>
+      </div>
+
 
       <!-- Email -->
       <div class="form-group">

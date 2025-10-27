@@ -1,0 +1,33 @@
+<div class="reservations-container">
+  <div class="reservations-header">
+    <h1>Mes réservations</h1>
+  </div>
+
+  <div class="reservations-content">
+    <div *ngIf="isLoading" class="loading">
+      <p>Chargement de vos réservations...</p>
+    </div>
+
+    <div *ngIf="!isLoading && reservations.length === 0" class="no-reservations">
+      <p>Vous n'avez pas encore de réservations.</p>
+    </div>
+
+    <div *ngIf="!isLoading && reservations.length > 0" class="reservations-list">
+      <div class="reservation-card" *ngFor="let event of reservations">
+        <div class="card-header">
+          <h3>{{ event.title }}</h3>
+          <span class="date">{{ formatDate(event.date) }}</span>
+        </div>
+        <div class="card-body">
+          <p class="description">{{ event.description }}</p>
+          <div class="event-details">
+            <span class="location" *ngIf="event.location">📍 {{ event.location }}</span>
+            <span class="participants" *ngIf="event.maxParticipants">
+              👥 {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} places
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

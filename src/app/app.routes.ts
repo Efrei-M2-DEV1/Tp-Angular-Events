@@ -4,6 +4,8 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -33,13 +35,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'Accueil'
   },
-   {
+  {
     path: 'event-form',
     component: EventFormComponent,
     canActivate: [authGuard],
     title: 'Créer un événement'
   },
-   {
+  {
     path: 'event-form/:id',
     component: EventFormComponent,
     canActivate: [authGuard],
@@ -50,6 +52,18 @@ export const routes: Routes = [
     component: EventDetailComponent,
     canActivate: [authGuard],
     title: 'Détail de l\'événement'
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    title: 'Mon profil'
+  },
+  {
+    path: 'reservations',
+    component: ReservationsComponent,
+    canActivate: [authGuard],
+    title: 'Mes réservations'
   },
 
   // Route wildcard - Page 404 (optionnelle mais recommandée)

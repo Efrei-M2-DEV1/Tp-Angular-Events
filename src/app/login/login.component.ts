@@ -43,7 +43,10 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: (user) => {
           console.log('Connexion réussie', user);
-          this.router.navigate(['/home']);
+          // Petit délai pour laisser le temps au BehaviorSubject d'émettre
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 100);
         },
         error: (error) => {
           this.errorMessage = 'Email ou mot de passe incorrect';

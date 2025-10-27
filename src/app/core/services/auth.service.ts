@@ -12,10 +12,24 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
+    console.log('AuthService Constructor - Loading user from storage');
     // Récupérer l'utilisateur du localStorage au démarrage
     const storedUser = this.getUserFromStorage();
+    console.log('AuthService Constructor - Stored user:', storedUser);
     if (storedUser) {
-      this.currentUserSubject.next(storedUser);
+      // Migrer les anciennes données si nécessaire
+      const migratedUser = this.migrateUserData(storedUser);
+      console.log('AuthService Constructor - Migrated user:', migratedUser);
+      this.currentUserSubject.next(migratedUser);
+      console.log('AuthService Constructor - User emitted to BehaviorSubject');
+      
+      // Sauvegarder les données migrées
+      if (migratedUser !== storedUser) {
+        localStorage.setItem('currentUser', JSON.stringify(migratedUser));
+      }
+    } else {
+      console.log('AuthService Constructor - No user in storage, emitting null');
+      this.currentUserSubject.next(null);
     }
   }
 
@@ -23,9 +37,10 @@ export class AuthService {
    * Inscription d'un nouvel utilisateur
    */
   register(registerData: RegisterData): Observable<User> {
-    const { name, email, password } = registerData;
+    const { firstName, lastName, email, password } = registerData;
     const newUser = {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       createdAt: new Date().toISOString()
@@ -60,12 +75,17 @@ export class AuthService {
           throw new Error('Mot de passe incorrect');
         }
 
+        // Migrer les anciennes données si nécessaire
+        const migratedUser = this.migrateUserData(user);
+
         // Générer un token
-        const token = this.generateToken(user);
-        this.saveAuthData(user, token);
-        this.currentUserSubject.next(user);
+        const token = this.generateToken(migratedUser);
+        this.saveAuthData(migratedUser, token);
         
-        return user;
+        console.log('Login: emitting user to BehaviorSubject:', migratedUser);
+        this.currentUserSubject.next(migratedUser);
+        
+        return migratedUser;
       }),
       catchError(error => {
         console.error('Erreur lors de la connexion:', error);
@@ -78,9 +98,11 @@ export class AuthService {
    * Déconnexion de l'utilisateur
    */
   logout(): void {
+    console.log('AuthService.logout() called');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
+    console.log('AuthService.logout() - localStorage cleared, null emitted');
   }
 
   /**
@@ -94,7 +116,19 @@ export class AuthService {
    * Récupérer l'utilisateur actuel
    */
   getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
+    // Toujours charger depuis localStorage pour garantir la fraîcheur
+    const storedUser = this.getUserFromStorage();
+    const migratedUser = storedUser ? this.migrateUserData(storedUser) : null;
+    console.log('AuthService.getCurrentUser() called - returning:', migratedUser);
+    return migratedUser;
+  }
+
+  /**
+   * Mettre à jour l'utilisateur courant (utile après modification du profil)
+   */
+  updateCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
   /**
@@ -118,6 +152,31 @@ export class AuthService {
   private getUserFromStorage(): User | null {
     const userJson = localStorage.getItem('currentUser');
     return userJson ? JSON.parse(userJson) : null;
+  }
+
+  /**
+   * Migrer les anciennes données utilisateur (name -> firstName/lastName)
+   */
+  private migrateUserData(user: any): User {
+    // Si l'utilisateur a déjà firstName/lastName, pas besoin de migration
+    if (user.firstName && user.lastName) {
+      return user;
+    }
+
+    // Si l'utilisateur a un champ "name" (ancien format)
+    if (user.name && !user.firstName) {
+      const nameParts = user.name.trim().split(' ');
+      return {
+        ...user,
+        firstName: nameParts[0] || '',
+        lastName: nameParts.slice(1).join(' ') || '',
+        // Garder le champ name pour compatibilité
+        name: user.name
+      };
+    }
+
+    // Sinon, retourner l'utilisateur tel quel
+    return user;
   }
 
   /**

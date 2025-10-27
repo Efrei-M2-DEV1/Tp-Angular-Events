@@ -21,7 +21,8 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
@@ -42,8 +43,12 @@ export class RegisterComponent {
     return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
 
-  get name() {
-    return this.registerForm.get('name');
+  get firstName() {
+    return this.registerForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.registerForm.get('lastName');
   }
 
   get email() {
@@ -63,9 +68,9 @@ export class RegisterComponent {
       this.isLoading = true;
       this.errorMessage = '';
 
-      const { name, email, password, confirmPassword } = this.registerForm.value;
+      const { firstName, lastName, email, password, confirmPassword } = this.registerForm.value;
 
-      this.authService.register({ name, email, password, confirmPassword }).subscribe({
+      this.authService.register({ firstName, lastName, email, password, confirmPassword }).subscribe({
         next: (user) => {
           console.log('Inscription réussie', user);
           this.router.navigate(['/home']);

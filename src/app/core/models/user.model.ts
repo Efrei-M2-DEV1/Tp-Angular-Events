@@ -4,6 +4,7 @@ export interface User {
   password?: string;
   firstName?: string;
   lastName?: string;
+  name?: string; // Pour compatibilité avec les anciennes données
   role?: string;
   createdAt?: string;
 }
@@ -14,7 +15,8 @@ export interface LoginCredentials {
 }
 
 export interface RegisterData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
