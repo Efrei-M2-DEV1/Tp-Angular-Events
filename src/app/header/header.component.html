@@ -1,5 +1,5 @@
 <header class="main-header">
-  <div class="logo">Events Manager</div>
+  <div class="logo"><a [routerLink]="['/home']" class="logo-link">Events Manager</a></div>
   <nav class="nav-menu" *ngIf="isLoggedIn">
     <span class="user-greeting">Bonjour, <strong>{{ displayName }}</strong></span>
     <div class="dropdown">

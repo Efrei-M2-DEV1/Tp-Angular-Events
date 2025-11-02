@@ -7,6 +7,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { authGuard } from './guards/auth.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   // Route par défaut - Redirection vers login
@@ -38,13 +39,13 @@ export const routes: Routes = [
   {
     path: 'event-form',
     component: EventFormComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, AdminGuard],
     title: 'Créer un événement'
   },
   {
     path: 'event-form/:id',
     component: EventFormComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, AdminGuard],
     title: 'Modifier un événement'
   },
   {

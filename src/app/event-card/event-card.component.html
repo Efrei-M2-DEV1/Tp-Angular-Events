@@ -30,13 +30,15 @@
     <button 
       class="btn-edit" 
       (click)="onEditClick($event)"
-      type="button">
+      type="button"
+      *ngIf="roleService.canEditEvent()">
       ✏️ Modifier
     </button>
     <button 
       class="btn-delete" 
       (click)="onDeleteClick($event)"
-      type="button">
+      type="button"
+      *ngIf="roleService.canDeleteEvent()">
       🗑️ Supprimer
     </button>
   </div>

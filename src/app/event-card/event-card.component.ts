@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Event } from '../core/models/event.model';
 import { Category } from '../core/models/category.model';
 import { EventService } from '../core/services/event.service';
+import { RegistrationService } from '../core/services/registration.service';
+import { RoleService } from '../core/services/role.service';
 import { HighlightDirective } from '../shared/directives/highlight.directive';
 import { NotificationService } from '../shared/notifications/notification.service';
 
@@ -23,7 +25,9 @@ export class EventCardComponent {
   @Output() eventUpdated = new EventEmitter<Event>();
 
   private eventService = inject(EventService);
+  private registrationService = inject(RegistrationService);
   private notifications = inject(NotificationService);
+  public roleService = inject(RoleService);
 
   onEventClick(): void {
     this.eventSelected.emit(this.event);
@@ -55,20 +59,36 @@ export class EventCardComponent {
       return;
     }
     
-    this.eventService.registerParticipant(this.event.id).subscribe({
-      next: (updated) => {
-        // Mise à jour locale
-        if (updated && updated.currentParticipants != null) {
-          this.event = { ...this.event, currentParticipants: updated.currentParticipants } as Event;
-        } else {
-          this.event = { ...this.event, currentParticipants: (current + 1) } as Event;
-        }
-        this.eventUpdated.emit(this.event);
-        this.notifications.success('Inscription confirmée !', 3000);
+    // Créer l'inscription dans le RegistrationService (localStorage)
+    this.registrationService.registerToEvent(this.event.id).subscribe({
+      next: (registration) => {
+        console.log('event-card - Registration created:', registration);
+        
+        // Incrémenter le compteur de participants dans le backend
+        this.eventService.registerParticipant(this.event.id!).subscribe({
+          next: (updated) => {
+            // Mise à jour locale
+            if (updated && updated.currentParticipants != null) {
+              this.event = { ...this.event, currentParticipants: updated.currentParticipants } as Event;
+            } else {
+              this.event = { ...this.event, currentParticipants: (current + 1) } as Event;
+            }
+            this.eventUpdated.emit(this.event);
+            this.notifications.success('Inscription confirmée !', 3000);
+          },
+          error: (err) => {
+            console.error('Erreur mise à jour compteur:', err);
+            this.notifications.error('Erreur lors de la mise à jour du compteur', 4000);
+          }
+        });
       },
       error: (err) => {
         console.error('Inscription impossible:', err);
-        this.notifications.error('Inscription impossible. Veuillez réessayer.', 4000);
+        if (err.message && err.message.includes('déjà inscrit')) {
+          this.notifications.warning('Vous êtes déjà inscrit à cet événement', 4000);
+        } else {
+          this.notifications.error('Inscription impossible. Veuillez réessayer.', 4000);
+        }
       }
     });
   }

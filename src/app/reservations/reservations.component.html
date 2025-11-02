@@ -27,6 +27,14 @@
             </span>
           </div>
         </div>
+        <div class="card-actions">
+          <button class="btn-detail" (click)="viewEventDetail(event.id)">
+            Voir les détails
+          </button>
+          <button class="btn-cancel" (click)="cancelRegistration(event.id)">
+            Annuler l'inscription
+          </button>
+        </div>
       </div>
     </div>
   </div>

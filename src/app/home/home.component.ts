@@ -4,6 +4,7 @@ import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Event } from '../core/models/event.model';
 import { EventService } from '../core/services/event.service';
 import { CategoryService } from '../core/services/category.service';
+import { RoleService } from '../core/services/role.service';
 import { Category } from '../core/models/category.model';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { Subscription, filter } from 'rxjs';
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private eventService: EventService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    public roleService: RoleService
   ) {}
 
   ngOnInit(): void {

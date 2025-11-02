@@ -14,6 +14,13 @@
   letter-spacing: 0.5px;
 }
 
+.logo-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
 .nav-menu {
   display: flex;
   align-items: center;

@@ -52,13 +52,15 @@
 
         <button 
           class="btn btn-edit"
-          (click)="onEdit()">
+          (click)="onEdit()"
+          *ngIf="roleService.canEditEvent()">
            Modifier
         </button>
 
         <button 
           class="btn btn-delete"
-          (click)="onDelete()">
+          (click)="onDelete()"
+          *ngIf="roleService.canDeleteEvent()">
           Supprimer
         </button>
       </div>
