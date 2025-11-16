@@ -9,12 +9,13 @@ export class HighlightDirective {
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.renderer.setStyle(this.el.nativeElement, 'background-color', '#f0f8ff');
+    // Ne pas toucher au background pour respecter les thèmes
     this.renderer.setStyle(this.el.nativeElement, 'border-color', 'var(--info-color)');
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    this.renderer.setStyle(this.el.nativeElement, 'background-color', 'white');
+    // Rétablir le style par défaut
+    this.renderer.removeStyle(this.el.nativeElement, 'background-color');
     this.renderer.setStyle(this.el.nativeElement, 'border-color', 'var(--border-color)');
   }
 }

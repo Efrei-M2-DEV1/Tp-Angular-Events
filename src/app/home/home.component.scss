@@ -46,12 +46,96 @@
 }
 
 .content-section {
-  background: white;
+  background: var(--card-bg);
   padding: 60px 20px;
   border-radius: 20px 20px 0 0;
   margin-top: -20px;
   position: relative;
   z-index: 1;
+}
+
+.filters-bar {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .search-input {
+    flex: 1 1 320px;
+    padding: 12px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.98rem;
+    outline: none;
+    color: var(--text-color);
+    background: var(--card-bg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+      transform: translateY(-1px);
+    }
+
+    &::placeholder {
+      color: rgba(127, 127, 127, 0.8);
+    }
+  }
+
+  .categories-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px; /* same radius as cards */
+      cursor: pointer;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* same shadow level as cards */
+      }
+
+      &.active {
+        border-color: var(--primary-color);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        color: var(--primary-color);
+      }
+
+      .chip-label {
+        line-height: 1;
+      }
+
+      .chip-remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 12px;
+        background: var(--border-color);
+        color: var(--text-color);
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: var(--primary-color);
+          color: #fff;
+        }
+      }
+    }
+  }
 }
 
 .events-section {

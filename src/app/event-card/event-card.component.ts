@@ -1,10 +1,13 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Event } from '../core/models/event.model';
 import { Category } from '../core/models/category.model';
 import { EventService } from '../core/services/event.service';
 import { RegistrationService } from '../core/services/registration.service';
 import { RoleService } from '../core/services/role.service';
+import { TicketService } from '../core/services/ticket.service';
+import { AuthService } from '../core/services/auth.service';
 import { HighlightDirective } from '../shared/directives/highlight.directive';
 import { NotificationService } from '../shared/notifications/notification.service';
 
@@ -15,7 +18,7 @@ import { NotificationService } from '../shared/notifications/notification.servic
   templateUrl: './event-card.component.html',
   styleUrls: ['./event-card.component.scss']
 })
-export class EventCardComponent {
+export class EventCardComponent implements OnInit, OnChanges {
   @Input() event!: Event;
   @Input() showActions: boolean = true;
   @Input() categories: Category[] = [];
@@ -26,8 +29,39 @@ export class EventCardComponent {
 
   private eventService = inject(EventService);
   private registrationService = inject(RegistrationService);
+  private ticketService = inject(TicketService);
+  private authService = inject(AuthService);
   private notifications = inject(NotificationService);
   public roleService = inject(RoleService);
+  private router = inject(Router);
+
+  isUserRegistered = false;
+
+  isPastEvent(): boolean {
+    if (!this.event?.date) return false;
+    return new Date(this.event.date).getTime() < new Date().getTime();
+  }
+
+  ngOnInit(): void {
+    this.checkRegistration();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['event']) {
+      this.checkRegistration();
+    }
+  }
+
+  private checkRegistration(): void {
+    if (!this.event?.id) {
+      this.isUserRegistered = false;
+      return;
+    }
+    this.registrationService.isUserRegistered(this.event.id).subscribe({
+      next: (res) => this.isUserRegistered = res,
+      error: () => this.isUserRegistered = false
+    });
+  }
 
   onEventClick(): void {
     this.eventSelected.emit(this.event);
@@ -51,6 +85,10 @@ export class EventCardComponent {
   onRegisterClick(event: MouseEvent): void {
     event.stopPropagation();
     if (!this.event?.id) return;
+    if (this.isPastEvent() && !this.roleService.isAdmin()) {
+      this.notifications.warning('Événement passé: inscription fermée', 4000);
+      return;
+    }
     
     // Vérifier si complet et notifier
     const current = this.event.currentParticipants || 0;
@@ -75,6 +113,18 @@ export class EventCardComponent {
             }
             this.eventUpdated.emit(this.event);
             this.notifications.success('Inscription confirmée !', 3000);
+            // Auto generate ticket
+            const user = this.authService.getCurrentUser();
+            if (user) {
+              this.ticketService.generateTicket(this.event, user as any, registration)
+                .catch(err => console.warn('Ticket generation failed:', err));
+            }
+            // Update registration flag
+            this.isUserRegistered = true;
+            // Redirect to event details after registration
+            if (this.event.id) {
+              this.router.navigate(['/event', this.event.id]);
+            }
           },
           error: (err) => {
             console.error('Erreur mise à jour compteur:', err);
@@ -90,6 +140,27 @@ export class EventCardComponent {
           this.notifications.error('Inscription impossible. Veuillez réessayer.', 4000);
         }
       }
+    });
+  }
+
+  onDownloadTicketClick(event: MouseEvent): void {
+    event.stopPropagation();
+    if (!this.event?.id) return;
+    this.registrationService.getUserRegistrations().subscribe({
+      next: regs => {
+        const reg = regs.find(r => String(r.eventId) === String(this.event!.id));
+        const user = this.authService.getCurrentUser();
+        if (reg && user) {
+          this.ticketService.generateTicket(this.event!, user as any, reg)
+            .catch(err => {
+              console.error(err);
+              this.notifications.error('Erreur génération du billet', 4000);
+            });
+        } else {
+          this.notifications.warning('Inscription introuvable ou utilisateur non connecté', 4000);
+        }
+      },
+      error: () => this.notifications.error('Erreur récupération de l\'inscription', 4000)
     });
   }
 

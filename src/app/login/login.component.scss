@@ -7,7 +7,7 @@
 }
 
 .login-card {
-  background: white;
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -18,7 +18,7 @@
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
+  color: var(--text-color);
 }
 
 .form-group {
@@ -28,22 +28,25 @@ h2 {
 label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
+  color: var(--text-color);
   font-weight: 500;
 }
 
 .form-control {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 5px;
   font-size: 1rem;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
 .form-control.is-invalid {
@@ -99,7 +102,7 @@ label {
 .register-link {
   text-align: center;
   margin-top: 1rem;
-  color: #666;
+  color: var(--text-color);
 }
 
 .register-link a {

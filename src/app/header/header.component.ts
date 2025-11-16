@@ -5,6 +5,7 @@ import { AuthService } from '../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../core/models/user.model';
 import { filter } from 'rxjs/operators';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     public auth: AuthService, 
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public theme: ThemeService
   ) {
     // Initialiser avec l'utilisateur actuel de manière synchrone
     this.currentUser = this.auth.getCurrentUser();
@@ -103,6 +105,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  toggleTheme(): void {
+    this.theme.toggle();
   }
 
   navigateTo(route: string): void {

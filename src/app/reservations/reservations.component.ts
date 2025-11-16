@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
+import { TicketService } from '../core/services/ticket.service';
+import { AuthService } from '../core/services/auth.service';
 import { Event } from '../core/models/event.model';
 
 @Component({
@@ -17,7 +19,9 @@ export class ReservationsComponent implements OnInit {
 
   constructor(
     private registrationService: RegistrationService,
-    private router: Router
+    private router: Router,
+    private ticketService: TicketService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -67,5 +71,21 @@ export class ReservationsComponent implements OnInit {
         }
       });
     }
+  }
+
+  downloadTicket(eventId: string | number | undefined): void {
+    if (!eventId) return;
+    // Récupérer l'inscription pour cet event
+    this.registrationService.getUserRegistrations().subscribe({
+      next: regs => {
+        const reg = regs.find(r => String(r.eventId) === String(eventId));
+        const ev = this.reservations.find(e => String(e.id) === String(eventId));
+        const user = this.authService.getCurrentUser();
+        if (reg && ev && user) {
+          this.ticketService.generateTicket(ev, user as any, reg)
+            .catch(err => console.error('Erreur génération billet:', err));
+        }
+      }
+    });
   }
 }

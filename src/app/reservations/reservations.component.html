@@ -19,20 +19,23 @@
           <span class="date">{{ formatDate(event.date) }}</span>
         </div>
         <div class="card-body">
-          <p class="description">{{ event.description }}</p>
+          <!-- <p class="description">{{ event.description }}</p> -->
           <div class="event-details">
             <span class="location" *ngIf="event.location">📍 {{ event.location }}</span>
-            <span class="participants" *ngIf="event.maxParticipants">
+            <!-- <span class="participants" *ngIf="event.maxParticipants">
               👥 {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} places
-            </span>
+            </span> -->
           </div>
         </div>
         <div class="card-actions">
           <button class="btn-detail" (click)="viewEventDetail(event.id)">
-            Voir les détails
+            Détails
           </button>
           <button class="btn-cancel" (click)="cancelRegistration(event.id)">
             Annuler l'inscription
+          </button>
+          <button class="btn-ticket" (click)="downloadTicket(event.id)">
+            🎫 Billet PDF
           </button>
         </div>
       </div>
