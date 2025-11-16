@@ -24,9 +24,9 @@
 .no-reservations {
   text-align: center;
   padding: 3rem;
-  background: white;
+  background: var(--card-bg);
   border-radius: 12px;
-  color: #666;
+  color: var(--text-color);
   font-size: 1.1rem;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .reservation-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -53,12 +53,12 @@
 
     h3 {
       margin: 0 0 0.5rem 0;
-      color: #333;
+      color: var(--text-color);
       font-size: 1.3rem;
     }
 
     .date {
-      color: #667eea;
+      color: var(--primary-color);
       font-size: 0.9rem;
       font-weight: 500;
     }
@@ -66,7 +66,7 @@
 
   .card-body {
     .description {
-      color: #555;
+      color: var(--text-color);
       margin-bottom: 1rem;
       line-height: 1.5;
     }
@@ -76,7 +76,60 @@
       flex-direction: column;
       gap: 0.5rem;
       font-size: 0.9rem;
-      color: #666;
+      color: var(--text-color);
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+
+    button {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.btn-detail {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+        }
+      }
+
+      &.btn-cancel {
+        background: transparent;
+        color: var(--danger-color);
+        border-color: var(--danger-color);
+
+        &:hover {
+          background: var(--danger-color);
+          color: #fff;
+          transform: translateY(-2px);
+        }
+      }
+
+      &.btn-ticket {
+        background: var(--card-bg);
+        color: var(--text-color);
+        border-color: var(--border-color);
+
+        &:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+          transform: translateY(-2px);
+        }
+      }
     }
   }
 }

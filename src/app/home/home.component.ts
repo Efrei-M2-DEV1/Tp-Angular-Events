@@ -4,6 +4,7 @@ import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Event } from '../core/models/event.model';
 import { EventService } from '../core/services/event.service';
 import { CategoryService } from '../core/services/category.service';
+import { RoleService } from '../core/services/role.service';
 import { Category } from '../core/models/category.model';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { Subscription, filter } from 'rxjs';
@@ -16,17 +17,22 @@ import { Subscription, filter } from 'rxjs';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  featuredEvents: Event[] = [];
   upcomingEvents: Event[] = [];
   pastEvents: Event[] = [];
+  filteredUpcoming: Event[] = [];
+  filteredPast: Event[] = [];
   categories: Category[] = [];
   isLoading = true;
+  searchTerm = '';
+  // Multi-select categories (store ids as string); empty array = all
+  selectedCategories: string[] = [];
   private routerSubscription?: Subscription;
 
   constructor(
     private eventService: EventService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    public roleService: RoleService
   ) {}
 
   ngOnInit(): void {
@@ -66,24 +72,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('Événements chargés:', events);
         console.log('Catégories disponibles:', this.categories);
         const now = new Date();
-        // Trier par date (les plus récents en premier)
-        const sortedEvents = events.sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-        // Séparer les événements passés et à venir
-        const upcoming: Event[] = [];
-        const past: Event[] = [];
-        for (const evt of sortedEvents) {
-          if (new Date(evt.date) < now) {
-            past.push(evt);
-          } else {
-            upcoming.push(evt);
-          }
-        }
-        // Afficher les 2 premiers à venir comme "en vedette", le reste comme "à venir"
-        this.featuredEvents = upcoming.slice(0, 2);
-        this.upcomingEvents = upcoming.slice(2);
+        const upcoming = events
+          .filter(e => new Date(e.date) >= now)
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        const past = events
+          .filter(e => new Date(e.date) < now)
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        this.upcomingEvents = upcoming;
         this.pastEvents = past;
+        this.applyFilters();
         this.isLoading = false;
       },
       error: (error) => {
@@ -102,7 +99,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   onEventDeleted(eventId: string | number): void {
     this.eventService.deleteEvent(eventId).subscribe({
       next: () => {
-        this.featuredEvents = this.featuredEvents.filter(e => e.id !== eventId);
         this.upcomingEvents = this.upcomingEvents.filter(e => e.id !== eventId);
         this.pastEvents = this.pastEvents.filter(e => e.id !== eventId);
         console.log('Événement supprimé avec succès');
@@ -117,15 +113,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (event.id != null) {
       this.router.navigate(['/event-form', event.id]);
     } else {
-      // Fallback to state navigation if id missing
       this.router.navigate(['/event-form'], { state: { event } });
     }
   }
 
   onEventUpdated(updated: Event): void {
     const updateList = (list: Event[]) => list.map(e => (e.id === updated.id ? { ...e, ...updated } : e));
-    this.featuredEvents = updateList(this.featuredEvents);
     this.upcomingEvents = updateList(this.upcomingEvents);
+    this.pastEvents = updateList(this.pastEvents);
+    this.applyFilters();
   }
 
   getCategoryName(categoryId: number): string {
@@ -140,5 +136,45 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onCreateEvent(): void {
     this.router.navigate(['/event-form']);
+  }
+
+  onSearchChange(term: string): void {
+    this.searchTerm = term.trim().toLowerCase();
+    this.applyFilters();
+  }
+
+  toggleCategory(categoryId: string): void {
+    const id = String(categoryId);
+    if (this.selectedCategories.includes(id)) {
+      this.selectedCategories = this.selectedCategories.filter(c => c !== id);
+    } else {
+      this.selectedCategories.push(id);
+    }
+    this.applyFilters();
+  }
+
+  removeCategory(categoryId: string, ev?: MouseEvent): void {
+    if (ev) ev.stopPropagation();
+    this.selectedCategories = this.selectedCategories.filter(c => c !== String(categoryId));
+    this.applyFilters();
+  }
+
+  clearAllCategories(): void {
+    this.selectedCategories = [];
+    this.applyFilters();
+  }
+
+  isCategorySelected(categoryId: string | number): boolean {
+    return this.selectedCategories.includes(String(categoryId));
+  }
+
+  private applyFilters(): void {
+    const matches = (e: Event) => {
+      const termOk = !this.searchTerm || e.title.toLowerCase().includes(this.searchTerm) || (e.description?.toLowerCase().includes(this.searchTerm));
+      const catOk = this.selectedCategories.length === 0 || this.selectedCategories.includes(String(e.categoryId));
+      return termOk && catOk;
+    };
+    this.filteredUpcoming = this.upcomingEvents.filter(matches);
+    this.filteredPast = this.pastEvents.filter(matches);
   }
 }

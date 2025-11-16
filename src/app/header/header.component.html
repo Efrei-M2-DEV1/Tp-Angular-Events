@@ -1,6 +1,10 @@
 <header class="main-header">
-  <div class="logo">Events Manager</div>
+  <div class="logo"><a [routerLink]="['/home']" class="logo-link">Events Manager</a></div>
   <nav class="nav-menu" *ngIf="isLoggedIn">
+    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="theme.isDark() ? 'Activer le mode clair' : 'Activer le mode sombre'">
+      <span *ngIf="!theme.isDark()">🌙</span>
+      <span *ngIf="theme.isDark()">☀️</span>
+    </button>
     <span class="user-greeting">Bonjour, <strong>{{ displayName }}</strong></span>
     <div class="dropdown">
       <button class="dropdown-toggle" (click)="toggleMenu()">

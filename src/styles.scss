@@ -11,6 +11,11 @@ body {
   background-color: #f5f5f5;
 }
 
+:root[data-theme="dark"] body {
+  background-color: #0f131a; /* deep dark */
+  color: var(--text-color);
+}
+
 /* Variables globales */
 :root {
   --primary-color: #667eea;
@@ -21,6 +26,19 @@ body {
   --info-color: #3498db;
   --text-color: #333;
   --border-color: #ddd;
+  --card-bg: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --primary-color: #4f46e5; /* indigo-600 */
+  --secondary-color: #7c3aed; /* purple-600 */
+  --success-color: #22c55e; /* green-500 */
+  --danger-color: #ef4444; /* red-500 */
+  --warning-color: #f59e0b; /* amber-500 */
+  --info-color: #3b82f6; /* blue-500 */
+  --text-color: #f3f4f6; /* gray-100 */
+  --border-color: #2d3748; /* gray-700 */
+  --card-bg: #1f2937; /* gray-800 */
 }
 
 /* Classes utilitaires */

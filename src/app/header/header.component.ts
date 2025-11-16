@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../core/models/user.model';
 import { filter } from 'rxjs/operators';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     public auth: AuthService, 
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public theme: ThemeService
   ) {
     // Initialiser avec l'utilisateur actuel de manière synchrone
     this.currentUser = this.auth.getCurrentUser();
@@ -103,6 +105,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  toggleTheme(): void {
+    this.theme.toggle();
   }
 
   navigateTo(route: string): void {

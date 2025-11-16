@@ -9,7 +9,7 @@
     <div class="event-location" *ngIf="event.location">
       📍 {{ event.location }}
     </div>
-    <div class="event-participants" *ngIf="event.maxParticipants">
+    <div class="event-participants" *ngIf="event.maxParticipants && (roleService.isAdmin() || !isPastEvent())">
       👥 {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} places
     </div>
     <div class="event-category" *ngIf="event.categoryId">
@@ -23,6 +23,7 @@
     <button
       class="btn-register"
       type="button"
+      *ngIf="!isPastEvent()"
       [disabled]="event.maxParticipants && (event.currentParticipants || 0) >= event.maxParticipants"
       (click)="onRegisterClick($event)">
       {{ (event.maxParticipants && (event.currentParticipants || 0) >= event.maxParticipants) ? 'Complet' : "S'inscrire" }}
@@ -30,13 +31,15 @@
     <button 
       class="btn-edit" 
       (click)="onEditClick($event)"
-      type="button">
+      type="button"
+      *ngIf="roleService.canEditEvent() && !isPastEvent()">
       ✏️ Modifier
     </button>
     <button 
       class="btn-delete" 
       (click)="onDeleteClick($event)"
-      type="button">
+      type="button"
+      *ngIf="roleService.canDeleteEvent()">
       🗑️ Supprimer
     </button>
   </div>

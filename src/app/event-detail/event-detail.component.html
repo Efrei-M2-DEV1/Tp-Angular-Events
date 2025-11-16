@@ -14,7 +14,7 @@
         <span class="info-text">{{ event.location }}</span>
       </div>
 
-      <div class="info-row" *ngIf="event.maxParticipants">
+      <div class="info-row" *ngIf="event.maxParticipants && (roleService.isAdmin() || !isEventPast())">
         <span class="info-icon">👥</span>
         <span class="info-text">
           {{ event.currentParticipants || 0 }} / {{ event.maxParticipants }} participants
@@ -45,20 +45,30 @@
       <div class="action-buttons">
         <button 
           class="btn btn-register"
+          *ngIf="!isRegistered && !isEventPast()"
           [disabled]="isFull()"
           (click)="onRegister()">
           {{ isFull() ? 'Complet' : "S'inscrire" }}
         </button>
 
+        <button
+          class="btn btn-register"
+          *ngIf="isRegistered && !isFull()"
+          (click)="downloadTicket()">
+          Télécharger mon billet (PDF)
+        </button>
+
         <button 
           class="btn btn-edit"
-          (click)="onEdit()">
+          (click)="onEdit()"
+          *ngIf="roleService.canEditEvent() && !isEventPast()">
            Modifier
         </button>
 
         <button 
           class="btn btn-delete"
-          (click)="onDelete()">
+          (click)="onDelete()"
+          *ngIf="roleService.canDeleteEvent()">
           Supprimer
         </button>
       </div>
